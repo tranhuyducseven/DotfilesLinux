@@ -88,7 +88,7 @@ window:
 
   dynamic_padding: true
   startup_mode: Maximized
-  opacity: 0.95
+  opacity: 1 
 
 tabspaces: 4
 
@@ -127,6 +127,6 @@ key_bindings:
   - { key: Minus, mods: Control, action: DecreaseFontSize }
   # - { key: Add, mods: Control, action: IncreaseFontSize }
   # - { key: Subtract, mods: Control, action: DecreaseFontSize }
-  - { key: N, mods: Control, action: SpawnNewInstance }
+  #  - { key: N, mods: Control, action: SpawnNewInstance }
 dynamic_title: true
 dynamic_padding: true

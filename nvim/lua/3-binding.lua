@@ -6,13 +6,13 @@ local map = utils.map
 -- Quick shortcut value define                                   -
 ------------------------------------------------------------------
 local tele_defi =
-    '<cmd>lua require("telescope.builtin").lsp_definitions({initial_mode = "normal"})<cr>'
+'<cmd>lua require("telescope.builtin").lsp_definitions({initial_mode = "normal"})<cr>'
 local diag_log = '<cmd>lua vim.diagnostic.open_float(nil, { focus = false, border = "single" })<cr>'
 local tele_ref = '<cmd>lua require("telescope.builtin").lsp_references()<cr>'
 local toggle_diag = '<cmd>Lspsaga show_line_diagnostics<CR>'
 local saga_range_action = function()
-    vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-U>', true, false, true))
-    lsp_action.range_code_action()
+  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-U>', true, false, true))
+  lsp_action.range_code_action()
 end
 local saga_scroll_up = function()
 end
@@ -38,6 +38,7 @@ map('n', 'D', '<cmd>Lspsaga hover_doc<CR>') ---------------------- Hover functio
 map('n', '<C-f>', saga_scroll_up) -------------------------------- Move hover popup up, Forward
 map('n', '<C-b>', saga_scroll_down) ------------------------------ Move hover popup down, Backward
 map('n', '``', toggle_diag) -------------------------------------- Show diagnostic log under cursor
+map("i", "jk", "<ESC>")
 
 map('n', '<S-h>', '<Plug>GoNSMLeft') ----------------------------- Move current character left
 map('n', '<S-j>', '<Plug>GoNSMDown') ----------------------------- Move current character down
@@ -93,17 +94,18 @@ map('n', '<leader>xq', '<cmd>TroubleToggle quickfix<cr>') --------------- Open q
 ------------------------------------------------------------------
 -- <Ctrl - t> for toggle terminal 1
 -- <2 - Ctrl - t> for toggle terminal 2
-map('n', '<C-`>', '<cmd>ToggleTermToggleAll<cr>') ---------------- Toggle terminal view
-map('i', '<C-`>', '<cmd>ToggleTermToggleAll<cr>') ---------------- Toggle terminal view, insert mode
+map('n', '<c-s>', '<cmd>ToggleTermToggleAll<cr>') ---------------- Toggle terminal view, Controll-shell
+map('i', '<c-s>', '<cmd>ToggleTermToggleAll<cr>') ---------------- Toggle terminal view, insert mode
 function _G.set_terminal_keymaps()
-    local opts = {noremap = true}
-    vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
+  local opts = { noremap = true }
+  vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
 end
+
 vim.cmd([[
       autocmd TermOpen * setlocal nospell
       autocmd! TermOpen term://* lua set_terminal_keymaps()
@@ -112,11 +114,8 @@ vim.cmd([[
             \ tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
       autocmd TermEnter term://*toggleterm#*
-            \ tnoremap <silent><c-`> <Cmd>ToggleTermToggleAll<CR>
+            \ tnoremap <silent><c-s> <Cmd>ToggleTermToggleAll<CR>
 
       nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
       inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 ]])
-
--- Press jk fast to enter
-map("i", "jk", "<ESC>", opts)
