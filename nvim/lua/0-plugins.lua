@@ -290,7 +290,12 @@ use {
   use {
       'ray-x/go.nvim',
       config = function()
-        require('go').setup({})
+        require('go').setup({
+          disable_defaults = false, 
+        go='go', 
+        goimport='gopls', -- goimport command, can be gopls[default] or goimport
+        fillstruct = 'gopls',
+        })
       end
   }
 
