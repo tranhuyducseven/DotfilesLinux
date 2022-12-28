@@ -12,7 +12,8 @@ local eslint_opts = require 'servers.eslint'
 local lua_opts = require 'servers.lua'
 local rust_opts = require 'servers.rust'
 local tailwindcss_opts = require 'servers.tailwindcss'
-local gopls_opts = require 'servers.go'
+local go_opts = require 'servers.go'
+
 -- Config supported servers
 local servers = {
   'bashls', 'pyright', 'clangd', 'yamlls', 'cssls', 'tsserver', 'eslint', 'jsonls', 'sumneko_lua',
@@ -54,8 +55,7 @@ local enhance_server_opts = {
     opts.filetypes = { 'html', 'css', 'typescriptreact', 'javascriptreact' }
   end,
   ['tailwindcss'] = tailwindcss_opts,
-  ['gopls'] = gopls_opts,
-
+  ['gopls'] = gopls_opts
 }
 
 -- Bind into LSP

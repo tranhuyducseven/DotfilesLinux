@@ -119,6 +119,5 @@ vim.cmd([[
       inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 ]])
 
-
 -- Import Golang package
 map('n', '<leader>o', '<cmd>GoImport<cr>') 

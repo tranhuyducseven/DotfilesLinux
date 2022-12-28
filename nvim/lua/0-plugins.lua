@@ -272,8 +272,9 @@ return require('packer').startup(function()
       end, 100)
     end,
   }
+
     -- plugin for golang
-    use {
+  use {
       'ray-x/go.nvim',
       config = function()
         require('go').setup({
