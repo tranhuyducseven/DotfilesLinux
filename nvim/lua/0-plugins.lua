@@ -35,19 +35,10 @@ return require('packer').startup(function()
     requires = { 'nvim-treesitter/nvim-treesitter' }
   }
 
-  -- use {
-  --   'gelio/dim.lua', ------------------------------- Dim unused variable
-  --   branch = "fix-treesitter-api-function-name",
-  --   requires = { 'nvim-treesitter/nvim-treesitter', 'neovim/nvim-lspconfig' }
-  -- }
-
-use {
-  "narutoxy/dim.lua",
-  requires = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
-  config = function()
-    require('dim').setup({})
-  end
-}
+  use {
+    "narutoxy/dim.lua",
+    requires = { "nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig" },
+  }
 
   use {
     'christoomey/vim-tmux-navigator' ----- Navigtion between screen and tmux using HJKL
@@ -58,13 +49,7 @@ use {
     'williamboman/nvim-lsp-installer' ---- Auto download language server
   }
 
-  -- use {
-  --   'j-hui/fidget.nvim', ----------------- Add LSP status at bottom-right
-  --   config = function()
-  --     require 'fidget'.setup { window = { blend = 0 } }
-  --   end
-  -- }
-  use {'rcarriga/nvim-notify', config = notify_config}
+  use { 'rcarriga/nvim-notify', config = notify_config }
 
   use {
     'hrsh7th/nvim-cmp', -------------------- UI Completion
@@ -72,23 +57,13 @@ use {
     'hrsh7th/cmp-buffer', ------------------ Buffer completion
     'hrsh7th/cmp-path', -------------------- Path Completion
     'onsails/lspkind-nvim', ---------------- Vscode style in completion
-    'L3MON4D3/LuaSnip', -------------------- Support snippet for completion
-    'saadparwaiz1/cmp_luasnip', ------------ Snippet source
     'hrsh7th/cmp-nvim-lua', ---------------- Completion for Nvim lua API
     'f3fora/cmp-spell', -------------------- Spell suggestion
-    'andersevenrud/cmp-tmux', -------------- Completion from tmux content,
     'lukas-reineke/cmp-under-comparator', -- Better completion's sorting
     'hrsh7th/cmp-cmdline', ----------------- Bind completion into vim cmd
-    -- 'zbirenbaum/copilot-cmp', -------------- Copilot completion
+    'SirVer/ultisnips',
+    'quangnguyen30192/cmp-nvim-ultisnips',
     run = { 'pip3 install black isort flake8 mypy' }
-  }
-
-  use {
-    'kosayoda/nvim-lightbulb',
-    requires = 'antoinemadec/FixCursorHold.nvim',
-    config = function()
-      require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
-    end
   }
 
   use {
@@ -143,7 +118,7 @@ use {
         hint_enable = true,
         fix_pos = false,
         auto_close_after = 3,
-        floating_window = false,
+        floating_window = true,
         handler_opts = { border = 'single' }
       }
     end
@@ -182,18 +157,20 @@ use {
     config = comment_config
   }
 
-  use 'davidosomething/vim-colors-meh'
   use {
-    -- 'projekt0n/github-nvim-theme', -------------------- Github theme
-    'catppuccin/nvim',
+    'folke/tokyonight.nvim',
     requires = { 'ray-x/lsp_signature.nvim' },
-    as = "catppuccin",
     config = theme_config
   }
 
   use {
     'rrethy/vim-hexokinase', ------------------------- Color review tool
-    run = 'make hexokinase'
+    run = 'make hexokinase',
+    config = function()
+      vim.cmd [[
+       let g:Hexokinase_highlighters = ['foregroundfull']
+     ]]
+    end
   }
 
   use {
@@ -202,18 +179,15 @@ use {
   }
 
   use {
-    'SmiteshP/nvim-gps', ----------------------------- Current line location in LSP for lualine
-    requires = 'nvim-treesitter/nvim-treesitter',
-    config = function()
-      require 'nvim-gps'.setup {}
-    end
+    "SmiteshP/nvim-navic",
+    requires = "neovim/nvim-lspconfig"
   }
 
   use {
     'nvim-lualine/lualine.nvim', ---------------------- Bottom line status
     requires = {
       { 'kyazdani42/nvim-web-devicons', opt = true }, 'ray-x/lsp_signature.nvim',
-      'SmiteshP/nvim-gps'
+      'SmiteshP/nvim-navic'
     },
     config = lualine_config
   }
@@ -266,7 +240,7 @@ use {
 
   use {
     'phaazon/hop.nvim', ---------------------------- Jump around buffer with go word(gw) and go line(gl)
-    branch = 'v1',
+    branch = 'v2',
     config = function()
       require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
     end
@@ -286,8 +260,20 @@ use {
     end
   }
 
-  -- plugin for golang
   use {
+    "zbirenbaum/copilot.lua",
+    event = "VimEnter",
+    config = function()
+      vim.defer_fn(function()
+        require("copilot").setup({
+          panel = { keymap = { open = "<C-CR>" } },
+          suggestion = { auto_trigger = true, keymap = { accept = "<C-a>" } }
+        })
+      end, 100)
+    end,
+  }
+    -- plugin for golang
+    use {
       'ray-x/go.nvim',
       config = function()
         require('go').setup({
@@ -298,5 +284,4 @@ use {
         })
       end
   }
-
 end)

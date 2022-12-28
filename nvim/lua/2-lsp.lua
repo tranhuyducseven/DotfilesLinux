@@ -2,6 +2,7 @@
 local lsp_installer = require 'nvim-lsp-installer'
 local init_checker = false
 local lspconfig = require 'lspconfig'
+local navic = require 'nvim-navic'
 
 -- Language server configuration
 local javascript_opts = require 'servers.javascript'
@@ -11,8 +12,7 @@ local eslint_opts = require 'servers.eslint'
 local lua_opts = require 'servers.lua'
 local rust_opts = require 'servers.rust'
 local tailwindcss_opts = require 'servers.tailwindcss'
-local go_opts = require 'servers.go'
-
+local gopls_opts = require 'servers.go'
 -- Config supported servers
 local servers = {
   'bashls', 'pyright', 'clangd', 'yamlls', 'cssls', 'tsserver', 'eslint', 'jsonls', 'sumneko_lua',
@@ -37,6 +37,9 @@ end
 
 -- Default attach for all server
 local attach_default = function(client, bufnr)
+  if client.server_capabilities.documentSymbolProvider then
+    navic.attach(client, bufnr)
+  end
 end
 
 -- Specific server configuration
@@ -52,6 +55,7 @@ local enhance_server_opts = {
   end,
   ['tailwindcss'] = tailwindcss_opts,
   ['gopls'] = gopls_opts,
+
 }
 
 -- Bind into LSP
